@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinNova — AI-Driven Financial Clarity</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sora: ['Sora', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            bg:      '#060912',
+            surface: '#091020',
+            card:    '#0c1530',
+            accent:  '#3b82f6',
+            'accent-dark': '#1d4ed8',
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #060912; color: #f1f5f9; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* ─── Gradient text ─── */
+    .grad-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── Blue CTA button ─── */
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 28px rgba(59,130,246,0.4);
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 0 44px rgba(59,130,246,0.55); }
+
+    /* ─── Ghost button ─── */
+    .btn-ghost {
+      color: #f1f5f9;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: background 0.2s;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { background: rgba(59,130,246,0.08); }
+
+    /* ─── Navbar glass ─── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6,9,18,0.8);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(59,130,246,0.1);
+    }
+
+    /* ─── Tag pill ─── */
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      border: 1px solid rgba(59,130,246,0.45);
+      background: rgba(59,130,246,0.09);
+      color: #60a5fa;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 0.35rem 1rem; border-radius: 9999px;
+    }
+
+    /* ─── Hero glow ─── */
+    .hero-glow {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 750px; height: 750px;
+      background: radial-gradient(circle, rgba(59,130,246,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ─── Cards ─── */
+    .service-card {
+      background: #0c1530;
+      border: 1px solid rgba(59,130,246,0.12);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .service-card:hover {
+      border-color: rgba(59,130,246,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(59,130,246,0.12);
+    }
+
+    /* ─── Icon badge ─── */
+    .icon-badge {
+      width: 48px; height: 48px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.28);
+      border-radius: 0.85rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ─── Float animation ─── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .float-anim { animation: float 5s ease-in-out infinite; }
+
+    /* ─── Fade-in ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+
+    /* ─── Section divider glow line ─── */
+    .glow-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent);
+    }
+
+    /* ─── Trusted strip ─── */
+    .trust-logo {
+      color: #334155; font-family: 'Sora', sans-serif;
+      font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .trust-logo:hover { color: #60a5fa; }
+
+    /* ─── About feature row ─── */
+    .feature-row {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      border: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .feature-row:hover { border-color: rgba(59,130,246,0.22); background: rgba(59,130,246,0.05); }
+
+    /* ─── Dashboard SVG card ─── */
+    .dash-frame {
+      background: #091020;
+      border: 1px solid rgba(59,130,246,0.14);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 60px rgba(59,130,246,0.09);
+    }
+
+    /* ─── Float animation ─── */
+    .float-anim { animation: float 5s ease-in-out infinite; }
+
+    /* ─── Footer ─── */
+    footer { background: #04070f; border-top: 1px solid rgba(59,130,246,0.1); }
+
+    /* ─── Social icon ─── */
+    .social-icon {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: #94a3b8; font-size: 0.85rem;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .social-icon:hover { border-color: #3b82f6; color: #60a5fa; background: rgba(59,130,246,0.1); }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #060912; }
+    ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════ -->
+<nav>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2.5 flex-shrink-0">
+      <img src="./网站参考素材/logo.png" alt="FinNova Logo"
+           class="h-9 w-auto object-contain"
+           onerror="this.style.display='none'" />
+      <span class="font-sora font-700 text-xl text-white tracking-tight">
+        Fin<span class="grad-text">Nova</span>
+      </span>
+    </a>
+
+    <!-- Nav links -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+      <li><a href="#about"    class="hover:text-blue-400 transition-colors">About</a></li>
+      <li><a href="#services" class="hover:text-blue-400 transition-colors">Services</a></li>
+      <li><a href="#platform" class="hover:text-blue-400 transition-colors">Platform</a></li>
+      <li><a href="#contact"  class="hover:text-blue-400 transition-colors">Contact</a></li>
+    </ul>
+
+    <!-- CTA -->
+    <a href="#" class="btn-primary text-sm">Get Started</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center overflow-hidden" id="hero">
+
+  <!-- Background glow -->
+  <div class="hero-glow"></div>
+  <!-- Subtle grid -->
+  <div class="absolute inset-0 opacity-[0.02]"
+       style="background-image: linear-gradient(rgba(59,130,246,0.6) 1px, transparent 1px),
+                                 linear-gradient(90deg, rgba(59,130,246,0.6) 1px, transparent 1px);
+              background-size: 60px 60px;">
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
+
+    <!-- Left: copy -->
+    <div>
+      <div class="tag-pill fade-up mb-6">
+        <span>✦</span> AI-Powered Finance Platform
+      </div>
+
+      <h1 class="font-sora font-extrabold text-5xl md:text-6xl leading-tight text-white fade-up delay-1 mb-6">
+        AI-Driven<br/>
+        <span class="grad-text">Financial Clarity,</span><br/>
+        At Every Scale.
+      </h1>
+
+      <p class="text-slate-400 text-lg leading-relaxed fade-up delay-2 mb-10 max-w-md">
+        FinNova's autonomous AI agent transforms fragmented financial data into
+        real-time intelligence — empowering founders and CFOs with the clarity
+        they need to grow with confidence.
+      </p>
+
+      <div class="flex flex-wrap gap-4 fade-up delay-3">
+        <a href="#" class="btn-primary">Get Started</a>
+        <a href="#platform" class="btn-ghost flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-xs">▶</span>
+          Watch Demo
+        </a>
+      </div>
+
+      <!-- Mini stats -->
+      <div class="flex gap-8 mt-12 fade-up delay-3">
+        <div>
+          <div class="font-sora font-bold text-2xl text-white">99.7%</div>
+          <div class="text-slate-500 text-xs mt-0.5">Ledger Accuracy</div>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div>
+          <div class="font-sora font-bold text-2xl text-white">80%</div>
+          <div class="text-slate-500 text-xs mt-0.5">Overhead Reduction</div>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div>
+          <div class="font-sora font-bold text-2xl text-white">24/7</div>
+          <div class="text-slate-500 text-xs mt-0.5">AI Monitoring</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Dashboard mockup -->
+    <div class="float-anim relative">
+      <!-- Glow behind card -->
+      <div class="absolute inset-0 rounded-2xl blur-3xl"
+           style="background: radial-gradient(ellipse, rgba(59,130,246,0.2) 0%, transparent 70%); transform: scale(1.1);"></div>
+
+      <div class="dash-frame relative">
+        <!-- Top bar -->
+        <div class="flex items-center gap-2 px-4 py-3"
+             style="background:#06091a; border-bottom:1px solid rgba(59,130,246,0.1);">
+          <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+          <span class="ml-3 text-xs text-slate-500 font-mono">FinNova Dashboard · Overview</span>
+        </div>
+
+        <!-- Dashboard body -->
+        <div class="p-5">
+
+          <!-- KPI row -->
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-slate-500 text-xs mb-1">Revenue</div>
+              <div class="font-sora font-bold text-white text-lg">$124,870</div>
+              <div class="text-green-400 text-xs mt-0.5">▲ 12.4%</div>
+            </div>
+            <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-slate-500 text-xs mb-1">Expenses</div>
+              <div class="font-sora font-bold text-white text-lg">$38,210</div>
+              <div class="text-red-400 text-xs mt-0.5">▼ 3.1%</div>
+            </div>
+            <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-slate-500 text-xs mb-1">Net Profit</div>
+              <div class="font-sora font-bold text-white text-lg">$86,660</div>
+              <div class="text-green-400 text-xs mt-0.5">▲ 18.7%</div>
+            </div>
+          </div>
+
+          <!-- Bar chart SVG -->
+          <div class="rounded-xl p-4 mb-4" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-medium text-slate-300">Monthly Revenue</span>
+              <span class="text-xs text-slate-500">2026</span>
+            </div>
+            <svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" class="w-full">
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.6"/>
+                </linearGradient>
+                <linearGradient id="barGrad2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.1"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="80" x2="340" y2="80" stroke="rgba(59,130,246,0.1)" stroke-width="1"/>
+              <line x1="0" y1="60" x2="340" y2="60" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+              <line x1="0" y1="40" x2="340" y2="40" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+              <line x1="0" y1="20" x2="340" y2="20" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+              <!-- Bars -->
+              <rect x="10"  y="45" width="28" height="35" rx="4" fill="url(#barGrad2)"/>
+              <rect x="58"  y="30" width="28" height="50" rx="4" fill="url(#barGrad2)"/>
+              <rect x="106" y="22" width="28" height="58" rx="4" fill="url(#barGrad)"/>
+              <rect x="154" y="38" width="28" height="42" rx="4" fill="url(#barGrad2)"/>
+              <rect x="202" y="15" width="28" height="65" rx="4" fill="url(#barGrad)"/>
+              <rect x="250" y="28" width="28" height="52" rx="4" fill="url(#barGrad)"/>
+              <rect x="298" y="10" width="28" height="70" rx="4" fill="url(#barGrad)"/>
+              <!-- Month labels -->
+              <text x="24"  y="88" font-size="7" fill="#475569" text-anchor="middle">Jan</text>
+              <text x="72"  y="88" font-size="7" fill="#475569" text-anchor="middle">Feb</text>
+              <text x="120" y="88" font-size="7" fill="#94a3b8" text-anchor="middle">Mar</text>
+              <text x="168" y="88" font-size="7" fill="#475569" text-anchor="middle">Apr</text>
+              <text x="216" y="88" font-size="7" fill="#94a3b8" text-anchor="middle">May</text>
+              <text x="264" y="88" font-size="7" fill="#94a3b8" text-anchor="middle">Jun</text>
+              <text x="312" y="88" font-size="7" fill="#60a5fa" text-anchor="middle" font-weight="600">Jul</text>
+            </svg>
+          </div>
+
+          <!-- Bottom row -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-slate-500 text-xs mb-2">Cash Flow Forecast</div>
+              <svg viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                <defs>
+                  <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#3b82f6"/>
+                    <stop offset="100%" stop-color="#60a5fa"/>
+                  </linearGradient>
+                </defs>
+                <polyline points="0,35 20,28 40,30 60,18 80,22 100,12 120,8 140,4"
+                  fill="none" stroke="url(#lineGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,35 20,28 40,30 60,18 80,22 100,12 120,8 140,4 140,40 0,40"
+                  fill="url(#lineGrad)" fill-opacity="0.09"/>
+              </svg>
+              <div class="text-green-400 text-xs mt-1 font-medium">↑ Positive Trend</div>
+            </div>
+            <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-slate-500 text-xs mb-2">Tax Readiness</div>
+              <div class="relative h-2 rounded-full mt-3 mb-1" style="background:rgba(59,130,246,0.1);">
+                <div class="absolute left-0 top-0 h-full rounded-full"
+                     style="width:87%; background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div>
+              </div>
+              <div class="flex justify-between text-xs mt-2">
+                <span class="text-slate-500">Compliance Score</span>
+                <span class="text-blue-400 font-semibold">87%</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TRUSTED BY
+══════════════════════════════════════════ -->
+<div class="glow-line"></div>
+<section class="py-12 px-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="text-slate-500 text-sm font-medium uppercase tracking-widest mb-8">
+      Trusted by 500+ Growing Businesses
+    </p>
+    <div class="flex flex-wrap justify-center items-center gap-10">
+      <span class="trust-logo">Stripe</span>
+      <span class="trust-logo">KPMG</span>
+      <span class="trust-logo">Xero</span>
+      <span class="trust-logo">SAP</span>
+      <span class="trust-logo">QuickBooks</span>
+    </div>
+  </div>
+</section>
+<div class="glow-line"></div>
+
+
+<!-- ══════════════════════════════════════════
+     ABOUT
+══════════════════════════════════════════ -->
+<section id="about" class="py-24 px-6">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+    <!-- Left: copy -->
+    <div>
+      <div class="tag-pill mb-5">About FinNova</div>
+      <h2 class="font-sora font-bold text-4xl text-white leading-tight mb-5">
+        Your Always-On<br/>
+        <span class="grad-text">AI Finance Agent</span>
+      </h2>
+      <p class="text-slate-400 leading-relaxed mb-10">
+        FinNova deploys an autonomous AI agent purpose-built for automated bookkeeping
+        and real-time financial analysis — reducing operational overhead by 80% while
+        delivering boardroom-grade insights around the clock.
+      </p>
+
+      <div class="flex flex-col gap-2">
+
+        <div class="feature-row">
+          <div class="icon-badge flex-shrink-0">🤖</div>
+          <div>
+            <div class="font-semibold text-white mb-0.5">Autonomous Processing</div>
+            <div class="text-slate-400 text-sm leading-relaxed">
+              Continuously ingests and reconciles transactional data across all connected accounts without human intervention.
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="icon-badge flex-shrink-0">⚡</div>
+          <div>
+            <div class="font-semibold text-white mb-0.5">Real-Time Analysis</div>
+            <div class="text-slate-400 text-sm leading-relaxed">
+              Sub-second financial reporting surfaces anomalies and opportunities the moment they emerge in your data.
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="icon-badge flex-shrink-0">🔒</div>
+          <div>
+            <div class="font-semibold text-white mb-0.5">Enterprise-Grade Security</div>
+            <div class="text-slate-400 text-sm leading-relaxed">
+              AES-256 encryption and SOC 2 Type II compliance ensure your financial data remains sovereign and protected.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right: Cash flow chart mockup -->
+    <div class="relative">
+      <div class="absolute inset-0 rounded-2xl blur-3xl"
+           style="background: radial-gradient(ellipse, rgba(59,130,246,0.14) 0%, transparent 70%); transform: scale(1.15);"></div>
+      <div class="dash-frame relative float-anim" style="animation-duration:6s; animation-delay:1s;">
+        <div class="flex items-center justify-between px-5 py-4"
+             style="border-bottom:1px solid rgba(59,130,246,0.1);">
+          <span class="font-sora font-semibold text-white text-sm">Cash Flow Intelligence</span>
+          <span class="text-xs text-blue-400 font-medium">● Live</span>
+        </div>
+        <div class="p-5">
+          <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" class="w-full mb-4">
+            <defs>
+              <linearGradient id="cfGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="cf2Grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid -->
+            <line x1="0" y1="140" x2="400" y2="140" stroke="rgba(59,130,246,0.1)" stroke-width="1"/>
+            <line x1="0" y1="105" x2="400" y2="105" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+            <line x1="0" y1="70"  x2="400" y2="70"  stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+            <line x1="0" y1="35"  x2="400" y2="35"  stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+
+            <!-- Expenses (dashed) -->
+            <path d="M0,120 C40,115 80,125 120,112 C160,100 200,118 240,108 C280,98 320,115 360,105 L400,100 L400,140 L0,140 Z"
+                  fill="url(#cf2Grad)"/>
+            <path d="M0,120 C40,115 80,125 120,112 C160,100 200,118 240,108 C280,98 320,115 360,105 L400,100"
+                  fill="none" stroke="#7dd3fc" stroke-width="1.5" stroke-opacity="0.45" stroke-dasharray="4,3"/>
+
+            <!-- Revenue (solid) -->
+            <path d="M0,110 C40,95 80,80 120,65 C160,50 200,70 240,52 C280,35 320,45 360,28 L400,18 L400,140 L0,140 Z"
+                  fill="url(#cfGrad)"/>
+            <path d="M0,110 C40,95 80,80 120,65 C160,50 200,70 240,52 C280,35 320,45 360,28 L400,18"
+                  fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- End dot -->
+            <circle cx="400" cy="18" r="4" fill="#60a5fa"/>
+            <circle cx="400" cy="18" r="8" fill="#60a5fa" fill-opacity="0.2"/>
+
+            <!-- Month labels -->
+            <text x="5"   y="153" font-size="8" fill="#334155">Jan</text>
+            <text x="82"  y="153" font-size="8" fill="#334155">Mar</text>
+            <text x="162" y="153" font-size="8" fill="#334155">May</text>
+            <text x="242" y="153" font-size="8" fill="#334155">Jul</text>
+            <text x="320" y="153" font-size="8" fill="#334155">Sep</text>
+            <text x="370" y="153" font-size="8" fill="#60a5fa" font-weight="600">Nov</text>
+          </svg>
+
+          <!-- Legend -->
+          <div class="flex items-center gap-6 text-xs mb-4">
+            <div class="flex items-center gap-1.5">
+              <span class="w-6 h-0.5 rounded" style="background:#3b82f6; display:inline-block;"></span>
+              <span class="text-slate-400">Revenue</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-6 h-0.5 rounded" style="display:inline-block; border-top:1px dashed #7dd3fc;"></span>
+              <span class="text-slate-400">Expenses</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="rounded-lg py-2" style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2);">
+              <div class="text-blue-400 font-sora font-bold text-base">+22%</div>
+              <div class="text-slate-500 text-xs">YoY Growth</div>
+            </div>
+            <div class="rounded-lg py-2" style="background:rgba(255,255,255,0.03); border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-white font-sora font-bold text-base">$2.1M</div>
+              <div class="text-slate-500 text-xs">Forecast Q4</div>
+            </div>
+            <div class="rounded-lg py-2" style="background:rgba(255,255,255,0.03); border:1px solid rgba(59,130,246,0.1);">
+              <div class="text-green-400 font-sora font-bold text-base">A+</div>
+              <div class="text-slate-500 text-xs">Risk Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     SERVICES GRID
+══════════════════════════════════════════ -->
+<section id="services" class="py-24 px-6" style="background: linear-gradient(180deg, #060912 0%, #080e1c 100%);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="tag-pill mx-auto mb-5">Our Services</div>
+      <h2 class="font-sora font-bold text-4xl text-white mb-4">
+        Precision Tools for<br/><span class="grad-text">Modern Finance Teams</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto">
+        Four core intelligence modules — each engineered to eliminate friction at every layer of your financial operation.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Card 1 -->
+      <div class="service-card">
+        <div class="icon-badge">📒</div>
+        <h3 class="font-sora font-semibold text-white text-xl mb-3">Automated Ledger</h3>
+        <p class="text-slate-400 leading-relaxed text-sm">
+          Leveraging optical character recognition and rule-based classification,
+          FinNova's ledger engine eliminates manual data entry with 99.7% accuracy —
+          ensuring real-time reconciliation across multi-currency accounts and
+          end-to-end audit-trail integrity.
+        </p>
+        <div class="mt-5 flex items-center gap-2 text-blue-400 text-sm font-medium">
+          <span>Learn more</span><span>→</span>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card">
+        <div class="icon-badge">📈</div>
+        <h3 class="font-sora font-semibold text-white text-xl mb-3">AI Cash Flow Forecast</h3>
+        <p class="text-slate-400 leading-relaxed text-sm">
+          Statistical models trained on longitudinal transaction datasets project future
+          liquidity positions with quantifiable confidence intervals — enabling proactive
+          capital allocation and informed short-term financing decisions.
+        </p>
+        <div class="mt-5 flex items-center gap-2 text-blue-400 text-sm font-medium">
+          <span>Learn more</span><span>→</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card">
+        <div class="icon-badge">🛡️</div>
+        <h3 class="font-sora font-semibold text-white text-xl mb-3">Tax Compliance</h3>
+        <p class="text-slate-400 leading-relaxed text-sm">
+          An automated compliance engine maps each transaction to prevailing fiscal
+          classification frameworks, generating jurisdiction-specific tax reports and
+          audit-ready documentation with zero manual intervention.
+        </p>
+        <div class="mt-5 flex items-center gap-2 text-blue-400 text-sm font-medium">
+          <span>Learn more</span><span>→</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card">
+        <div class="icon-badge">🏆</div>
+        <h3 class="font-sora font-semibold text-white text-xl mb-3">Industry Benchmarking</h3>
+        <p class="text-slate-400 leading-relaxed text-sm">
+          Proprietary sector indices benchmark organisational KPIs against industry
+          cohort medians, surfacing strategic performance gaps and informing
+          data-driven competitive positioning at the executive level.
+        </p>
+        <div class="mt-5 flex items-center gap-2 text-blue-400 text-sm font-medium">
+          <span>Learn more</span><span>→</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PLATFORM / DASHBOARD VISUAL
+══════════════════════════════════════════ -->
+<section id="platform" class="py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <div class="tag-pill mx-auto mb-5">The Platform</div>
+      <h2 class="font-sora font-bold text-4xl text-white mb-4">
+        Real-Time Intelligence,<br/><span class="grad-text">Visualised</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto">
+        A unified command centre for your entire financial operation — from ledger entries
+        to executive-level dashboards, rendered in milliseconds.
+      </p>
+    </div>
+
+    <!-- Large composite mockup -->
+    <div class="relative">
+      <div class="absolute inset-0 rounded-3xl blur-3xl"
+           style="background: radial-gradient(ellipse at 50% 60%, rgba(59,130,246,0.12) 0%, transparent 65%); transform: scale(1.05);"></div>
+
+      <div class="dash-frame relative mx-auto max-w-5xl" style="border-radius:1.5rem;">
+        <!-- Browser chrome -->
+        <div class="flex items-center gap-2 px-5 py-3.5"
+             style="background:#04060e; border-bottom:1px solid rgba(59,130,246,0.1);">
+          <span class="w-3 h-3 rounded-full" style="background:#ff5f57;"></span>
+          <span class="w-3 h-3 rounded-full" style="background:#febc2e;"></span>
+          <span class="w-3 h-3 rounded-full" style="background:#28c840;"></span>
+          <div class="ml-4 flex-1 max-w-xs h-6 rounded-md flex items-center px-3"
+               style="background:#091020; border:1px solid rgba(59,130,246,0.1);">
+            <span class="text-slate-500 text-xs font-mono">app.finnova.ai/dashboard</span>
+          </div>
+        </div>
+
+        <!-- Inner dashboard -->
+        <div class="flex" style="min-height:420px;">
+
+          <!-- Sidebar -->
+          <div class="flex-shrink-0 w-14 flex flex-col items-center gap-4 py-5"
+               style="background:#04060e; border-right:1px solid rgba(59,130,246,0.08);">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white"
+                 style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">F</div>
+            <div class="text-slate-600 text-base mt-2">⊞</div>
+            <div class="text-blue-400 text-base">◫</div>
+            <div class="text-slate-600 text-base">⊙</div>
+            <div class="text-slate-600 text-base">◷</div>
+            <div class="text-slate-600 text-base mt-auto">⚙</div>
+          </div>
+
+          <!-- Main content -->
+          <div class="flex-1 p-6 overflow-hidden">
+            <!-- Header row -->
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <div class="text-slate-400 text-xs mb-0.5">Good morning,</div>
+                <div class="font-sora font-semibold text-white text-base">Financial Overview</div>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-xs px-3 py-1 rounded-full text-blue-400 font-medium"
+                      style="background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.25);">
+                  Q3 2026
+                </span>
+                <span class="text-xs px-3 py-1 rounded-full text-slate-400"
+                      style="background:rgba(255,255,255,0.04); border:1px solid rgba(59,130,246,0.1);">
+                  Export ↗
+                </span>
+              </div>
+            </div>
+
+            <!-- Top metrics -->
+            <div class="grid grid-cols-4 gap-3 mb-5">
+              <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+                <div class="text-slate-500 text-xs mb-1">Total Revenue</div>
+                <div class="font-sora font-bold text-white">$2.47M</div>
+                <div class="text-green-400 text-xs">▲ 18.2%</div>
+              </div>
+              <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+                <div class="text-slate-500 text-xs mb-1">Gross Margin</div>
+                <div class="font-sora font-bold text-white">71.4%</div>
+                <div class="text-green-400 text-xs">▲ 2.1pp</div>
+              </div>
+              <div class="rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+                <div class="text-slate-500 text-xs mb-1">Burn Rate</div>
+                <div class="font-sora font-bold text-white">$84K/mo</div>
+                <div class="text-red-400 text-xs">▼ 5.3%</div>
+              </div>
+              <div class="rounded-xl p-3" style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25);">
+                <div class="text-slate-500 text-xs mb-1">Runway</div>
+                <div class="font-sora font-bold text-blue-300">29 Months</div>
+                <div class="text-slate-500 text-xs">● Healthy</div>
+              </div>
+            </div>
+
+            <!-- Chart + table -->
+            <div class="grid grid-cols-5 gap-4">
+              <!-- Chart -->
+              <div class="col-span-3 rounded-xl p-4" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-medium text-slate-300">Revenue vs Expenses — 2026</span>
+                </div>
+                <svg viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                  <defs>
+                    <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="90" x2="280" y2="90" stroke="rgba(59,130,246,0.1)" stroke-width="1"/>
+                  <line x1="0" y1="67" x2="280" y2="67" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+                  <line x1="0" y1="45" x2="280" y2="45" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+                  <line x1="0" y1="22" x2="280" y2="22" stroke="rgba(59,130,246,0.07)" stroke-width="1"/>
+                  <path d="M0,75 C35,65 70,55 105,42 C140,30 175,38 210,22 C240,10 260,15 280,8 L280,90 L0,90 Z"
+                        fill="url(#revGrad)"/>
+                  <path d="M0,75 C35,65 70,55 105,42 C140,30 175,38 210,22 C240,10 260,15 280,8"
+                        fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M0,82 C35,80 70,78 105,76 C140,74 175,72 210,70 C245,68 265,66 280,64"
+                        fill="none" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3,2" stroke-opacity="0.4"/>
+                  <text x="0"   y="98" font-size="6" fill="#334155">J</text>
+                  <text x="35"  y="98" font-size="6" fill="#334155">F</text>
+                  <text x="70"  y="98" font-size="6" fill="#334155">M</text>
+                  <text x="105" y="98" font-size="6" fill="#334155">A</text>
+                  <text x="140" y="98" font-size="6" fill="#334155">M</text>
+                  <text x="175" y="98" font-size="6" fill="#334155">J</text>
+                  <text x="210" y="98" font-size="6" fill="#334155">J</text>
+                  <text x="245" y="98" font-size="6" fill="#60a5fa">A▸</text>
+                </svg>
+              </div>
+
+              <!-- Transactions -->
+              <div class="col-span-2 rounded-xl p-3" style="background:#06091a; border:1px solid rgba(59,130,246,0.1);">
+                <div class="text-xs font-medium text-slate-300 mb-3">Recent Entries</div>
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(59,130,246,0.07);">
+                    <div>
+                      <div class="text-white text-xs font-medium">AWS Invoice</div>
+                      <div class="text-slate-500" style="font-size:9px;">Cloud · Auto-classified</div>
+                    </div>
+                    <div class="text-red-400 text-xs font-semibold">-$2,340</div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(59,130,246,0.07);">
+                    <div>
+                      <div class="text-white text-xs font-medium">Client Payment</div>
+                      <div class="text-slate-500" style="font-size:9px;">Revenue · Verified</div>
+                    </div>
+                    <div class="text-green-400 text-xs font-semibold">+$18,500</div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(59,130,246,0.07);">
+                    <div>
+                      <div class="text-white text-xs font-medium">Payroll Run</div>
+                      <div class="text-slate-500" style="font-size:9px;">HR · Recurring</div>
+                    </div>
+                    <div class="text-red-400 text-xs font-semibold">-$31,200</div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5">
+                    <div>
+                      <div class="text-white text-xs font-medium">SaaS Revenue</div>
+                      <div class="text-slate-500" style="font-size:9px;">Subscription · Auto</div>
+                    </div>
+                    <div class="text-green-400 text-xs font-semibold">+$9,870</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════ -->
+<section class="py-20 px-6">
+  <div class="max-w-4xl mx-auto text-center relative">
+    <div class="absolute inset-0 rounded-3xl blur-3xl"
+         style="background: radial-gradient(ellipse, rgba(59,130,246,0.14) 0%, transparent 65%);"></div>
+    <div class="relative rounded-3xl px-10 py-14"
+         style="background:#091020; border:1px solid rgba(59,130,246,0.25);">
+      <div class="tag-pill mx-auto mb-6">Start Today</div>
+      <h2 class="font-sora font-bold text-4xl text-white mb-5">
+        Ready to Bring <span class="grad-text">Clarity</span><br/>to Your Finances?
+      </h2>
+      <p class="text-slate-400 mb-8 max-w-lg mx-auto">
+        Join hundreds of finance teams who eliminated manual work and gained real-time
+        visibility with FinNova's AI agent.
+      </p>
+      <a href="#" class="btn-primary text-base px-10 py-3.5">Get Started — It's Free</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER / CONTACT
+══════════════════════════════════════════ -->
+<footer id="contact">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-4 gap-10 pb-12"
+         style="border-bottom:1px solid rgba(59,130,246,0.1);">
+
+      <!-- Brand -->
+      <div>
+        <a href="#" class="flex items-center gap-2.5 mb-4">
+          <img src="./网站参考素材/logo.png" alt="FinNova"
+               class="h-8 w-auto object-contain"
+               onerror="this.style.display='none'" />
+          <span class="font-sora font-700 text-lg text-white">
+            Fin<span class="grad-text">Nova</span>
+          </span>
+        </a>
+        <p class="text-slate-500 text-sm leading-relaxed mb-5">
+          AI-driven financial clarity for the modern enterprise. Built for precision, designed for scale.
+        </p>
+        <div class="flex gap-2.5">
+          <a href="https://www.instagram.com/mbnm_official.6/" target="_blank" rel="noopener"
+             class="social-icon" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#" class="social-icon" title="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="social-icon" title="X / Twitter">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <div class="text-white font-semibold text-sm mb-5">Company</div>
+        <ul class="flex flex-col gap-3 text-sm text-slate-500">
+          <li><a href="#about"    class="hover:text-blue-400 transition-colors">About Us</a></li>
+          <li><a href="#services" class="hover:text-blue-400 transition-colors">Services</a></li>
+          <li><a href="#platform" class="hover:text-blue-400 transition-colors">Platform</a></li>
+          <li><a href="#"         class="hover:text-blue-400 transition-colors">Careers</a></li>
+          <li><a href="#"         class="hover:text-blue-400 transition-colors">Press</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <div class="text-white font-semibold text-sm mb-5">Resources</div>
+        <ul class="flex flex-col gap-3 text-sm text-slate-500">
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Documentation</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">API Reference</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Blog</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Case Studies</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Status</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <div class="text-white font-semibold text-sm mb-5">Contact</div>
+        <ul class="flex flex-col gap-4 text-sm text-slate-500">
+          <li class="flex items-start gap-2.5">
+            <i class="fa-solid fa-location-dot mt-0.5 text-blue-500/60"></i>
+            <span>123 Finance Avenue<br/>Kuala Lumpur 50450<br/>Malaysia</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <i class="fa-solid fa-envelope text-blue-500/60"></i>
+            <a href="mailto:hello@finnova.ai" class="hover:text-blue-400 transition-colors">
+              hello@finnova.ai
+            </a>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <i class="fa-solid fa-phone text-blue-500/60"></i>
+            <span>+60 3-1234 5678</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 text-xs text-slate-600">
+      <span>© 2026 FinNova Sdn Bhd. All rights reserved.</span>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-slate-400 transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-slate-400 transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-slate-400 transition-colors">Cookie Policy</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
